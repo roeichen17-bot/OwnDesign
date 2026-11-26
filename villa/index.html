@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- The hash allows exactly the import map below; every other script must come from this site. -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'sha256-lENMC2zqjC+Jj0RtQ57ItQqtmODOETCc5usr1KAQPnI='; object-src 'none'; base-uri 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Villa 3D demo · Atelier</title>
+  <link rel="icon" href="data:,">
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #2b2018; color: #3a2a1c; font: 15px/1.5 system-ui, sans-serif; }
+    canvas { display: block; touch-action: none; cursor: grab; }
+    [hidden] { display: none !important; }
+    #loading { position: fixed; inset: 0; display: grid; place-content: center; gap: 12px; text-align: center; color: #f6e9d6; }
+    #loading progress { width: min(320px, 70vw); accent-color: #c4704a; }
+    .card { position: fixed; background: rgb(255 248 236 / 0.92); border: 1px solid rgb(90 60 35 / 0.2); border-radius: 10px; box-shadow: 0 4px 18px rgb(0 0 0 / 0.18); padding: 8px 12px; }
+    button, summary { font: inherit; color: inherit; background: #fff8ec; border: 1px solid #c9ab88; border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+    button:hover, summary:hover { background: #f3e0c4; }
+    #tools a { color: inherit; text-align: center; font-size: 13px; }
+    :focus-visible { outline: 3px solid #c4704a; outline-offset: 2px; }
+    #top { top: 12px; left: 12px; max-width: min(340px, calc(100vw - 48px)); }
+    #top p { margin: 6px 0 0; font-size: 13px; }
+    #where { font-weight: 700; font-size: 17px; }
+    #tools { top: 12px; right: 12px; display: flex; flex-direction: column; gap: 6px; align-items: stretch; max-height: calc(100vh - 48px); overflow: auto; }
+    #rooms { display: grid; gap: 4px; margin-top: 6px; }
+    #pad { left: 50%; bottom: 12px; transform: translateX(-50%); display: grid; grid-template-columns: repeat(3, 50px); gap: 4px; padding: 5px; direction: ltr; }
+    #pad button { min-height: 44px; padding: 0; font-size: 20px; touch-action: none; user-select: none; }
+    @media (max-width: 600px) { #top p { display: none; } #top { top: auto; bottom: 130px; } }
+  </style>
+  <script type="importmap">{ "imports": { "three": "../vendor/three-0.180.0/three.module.min.js" } }</script>
+</head>
+<body>
+  <div id="loading" role="status">
+    <p>Loading the villa…</p>
+    <progress id="progress" max="1" value="0"></progress>
+  </div>
+  <div id="hud" hidden>
+    <div class="card" id="top">
+      <div id="where" aria-live="polite"></div>
+      <p>Walk: W A S D or arrows · Run: Shift<br>Look: drag · Upstairs: take the stairs in the entrance hall</p>
+    </div>
+    <div class="card" id="tools">
+      <details id="menu"><summary>Jump to a room</summary><div id="rooms"></div></details>
+      <button type="button" id="quality"></button>
+    </div>
+    <div class="card" id="pad" role="group" aria-label="Walking controls">
+      <button type="button" data-move="turnLeft" aria-label="Turn left">↺</button>
+      <button type="button" data-move="forward" aria-label="Walk forward">↑</button>
+      <button type="button" data-move="turnRight" aria-label="Turn right">↻</button>
+      <button type="button" data-move="left" aria-label="Step left">←</button>
+      <button type="button" data-move="back" aria-label="Walk back">↓</button>
+      <button type="button" data-move="right" aria-label="Step right">→</button>
+    </div>
+  </div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
